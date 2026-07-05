@@ -334,12 +334,17 @@
        landing.html. Se perdió en una reconstrucción anterior de este archivo
        (quedó solo el anillo concéntrico casi invisible de body::before) — se
        restaura acá para devolver la "atmósfera" que tenía el sitio.
-       Radios en px fijos (circle 600px / 460px), NO en % del contenedor: en
+       Radios en px fijos (circle 620px / 480px), NO en % del contenedor: en
        mobile el hero se estira mucho más alto (copy + mockup apilados), y un
        radio en % de un contenedor así de alto se convertía en una franja
        naranja sólida corriendo todo el borde en vez de un resplandor de
        esquina. Con px fijos el glow se queda como acento de esquina sin
-       importar cuánto crezca el hero verticalmente. */
+       importar cuánto crezca el hero verticalmente.
+       Centro EXACTO en la esquina (100% 0% / 0% 100%), no corrido hacia
+       afuera del box: corrido hacia afuera solo se veía el borde apagado del
+       círculo (casi invisible); centrado en la esquina se ve el núcleo del
+       resplandor. Opacidad más alta (0.38 / 0.20) para que de verdad se lea
+       como luz anaranjada, no como una sombra café apenas perceptible. */
     .hero::before {
       content: '';
       position: absolute;
@@ -347,8 +352,8 @@
       z-index: 0;
       pointer-events: none;
       background:
-        radial-gradient(600px circle at calc(100% + 120px) -80px, rgba(228, 87, 46, 0.20), transparent 70%),
-        radial-gradient(460px circle at -100px 100%, rgba(228, 87, 46, 0.10), transparent 70%),
+        radial-gradient(620px circle at 100% 0%, rgba(228, 87, 46, 0.38), transparent 65%),
+        radial-gradient(480px circle at 0% 100%, rgba(228, 87, 46, 0.20), transparent 65%),
         repeating-linear-gradient(90deg, rgba(239, 235, 226, 0.04) 0 1px, transparent 1px 96px),
         repeating-linear-gradient(0deg, rgba(239, 235, 226, 0.04) 0 1px, transparent 1px 96px);
     }
