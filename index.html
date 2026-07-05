@@ -43,7 +43,7 @@
       --font-body: 'Archivo', sans-serif;
       --font-mono: 'IBM Plex Mono', monospace;
 
-      --fs-hero: clamp(2.75rem, 6vw + 1rem, 5.5rem);
+      --fs-hero: clamp(2.35rem, 7vw + 0.7rem, 5.5rem);
       --fs-h2: clamp(2rem, 3.4vw + 1rem, 3.25rem);
       --fs-h2-lg: clamp(2.25rem, 4.4vw + 1rem, 4.25rem);
       --fs-h2-sm: clamp(1.5rem, 2.2vw + 1rem, 2.15rem);
@@ -262,24 +262,20 @@
       gap: var(--space-sm);
       padding-block: var(--space-sm);
     }
-    /* En pantallas angostas el logo+tagline y el botón no cabían en una fila
-       y quedaban superpuestos: se achica el lockup y se oculta la tagline
-       para dejarle espacio real al botón. */
+    /* En pantallas angostas el logo+tagline y el botón no cabían en una fila:
+       en vez de partir el header a 2 filas (el botón a ancho completo se veía
+       como una fila aparte, no como parte del header), se achica el lockup,
+       se oculta la tagline y el botón pasa a una versión de texto corto —
+       el header se mantiene en una sola fila en todos los anchos. */
+    .nav__cta-full { display: inline; }
+    .nav__cta-short { display: none; }
     @media (max-width: 480px) {
-      /* El botón nunca puede achicarse (white-space: nowrap en .btn +
-         flex-shrink: 0 en .nav__cta): en vez de forzarlo a convivir en una
-         sola fila con el logo (lo que lo hacía overlapear), se permite que
-         el header pase a dos filas cuando no entran ambos completos.
-         El botón ocupa el ancho completo de esa segunda fila (flex-basis:
-         100%) en vez de quedar como un chip chico pegado a la izquierda —
-         eso es lo que se veía "desequilibrado": mucho espacio vacío a la
-         derecha, como si sobrara. A ancho completo se lee como una fila
-         propia e intencional, no como un resto. */
-      .nav__inner { flex-wrap: wrap; row-gap: var(--space-sm); }
       .brand-lockup__tagline { display: none; }
       .brand-lockup__icon { width: 1.7rem; height: 1.7rem; }
       .brand-lockup__word { font-size: 1.1rem; white-space: nowrap; }
-      .nav__cta { flex: 1 1 100%; justify-content: center; padding: 0.8rem 1rem; font-size: 0.9rem; }
+      .nav__cta { padding: 0.75rem 1.1rem; font-size: 0.9rem; }
+      .nav__cta-full { display: none; }
+      .nav__cta-short { display: inline; }
     }
 
     /* Lockup de marca: ícono oficial (círculo + aguja) en SVG + wordmark en HTML/CSS.
@@ -367,6 +363,13 @@
 
     .hero h1 { font-size: var(--fs-hero); }
     .hero h1 .accent { color: var(--accent); }
+    /* Tope de seguridad fijo, además del clamp: "Más llamadas." y "Más
+       clientes." casi no tenían aire en mobile angosto (272px de texto en
+       un contenedor de 272px). No depender solo de la fórmula del clamp,
+       que puede variar por navegador o por el tamaño de fuente del sistema. */
+    @media (max-width: 380px) {
+      .hero h1 { font-size: 2.3rem; }
+    }
     /* Cada línea entra por separado (en vez de todo el h1 de un bloque):
        refuerza la progresión llamadas → cierres → clientes. */
     .hero__line { display: block; }
@@ -671,6 +674,9 @@
       margin-bottom: var(--space-2xs);
       position: relative;
       z-index: 1;
+      /* Se sobreescribe más abajo dentro de .section--light: ahí --text-muted
+         (#6E6A5C) da solo 3.99:1 contra el fondo de .metric-card (#E3DDCC),
+         no pasa AA (mínimo 4.5:1) para este texto pequeño. */
     }
     .metric-card__label {
       font-family: var(--font-display);
@@ -876,6 +882,11 @@
 
     @media (max-width: 999px) {
       .hero__mock { margin-top: var(--space-xl); max-width: 380px; margin-inline: auto; }
+      /* En mobile .hero__mock tiene poco margen propio: el offset negativo de
+         escritorio empujaba la tarjeta hasta pegarla al borde de la pantalla
+         (left: 0, sin el respiro de 24px que respeta el resto del sitio).
+         Un inset positivo chico mantiene el efecto "flotante" sin salirse. */
+      .hero__notify { left: var(--space-sm); }
     }
     @media (min-width: 1000px) {
       /* align-items: start (no center): con el h1 más corto (3 líneas) el
@@ -959,6 +970,9 @@
       --bg-elevated: #EAE4D3;
       --border-subtle: #C9C1AC;
     }
+    /* --text-muted (#6E6A5C) da 3.99:1 contra #E3DDCC — no pasa AA. Un tono
+       más oscuro solo para esta etiqueta puntual sí pasa (5.42:1). */
+    .section--light .metric-card__tag { color: #5A5647; }
   </style>
 </head>
 <body>
@@ -977,7 +991,10 @@
         </span>
       </a>
 
-      <a href="#contacto" class="btn btn-primary nav__cta">Quiero tracción real</a>
+      <a href="#contacto" class="btn btn-primary nav__cta">
+        <span class="nav__cta-full">Quiero tracción real</span>
+        <span class="nav__cta-short">Hablemos</span>
+      </a>
     </div>
   </header>
 
@@ -1253,6 +1270,7 @@
       initContactForm();
       initPillarSpotlight();
       initActiveStep();
+      initTrackFillFallback();
     });
 
     function initPillarSpotlight() {
@@ -1266,7 +1284,17 @@
       });
     }
 
+    /** true si el navegador soporta animation-timeline: view() (Chrome/Edge/Safari 26+) */
+    function supportsScrollTimeline() {
+      return typeof CSS !== 'undefined' && CSS.supports && CSS.supports('animation-timeline', 'view()');
+    }
+
     function initActiveStep() {
+      // En navegadores que soportan animation-timeline, la animación CSS ya
+      // controla el estado activo de cada número — este observer quedaría
+      // corriendo de fondo sin efecto visual (la animación gana la cascada).
+      if (supportsScrollTimeline()) return;
+
       const steps = Array.from(document.querySelectorAll('.process-step'));
       if (!steps.length) return;
 
@@ -1285,6 +1313,41 @@
       );
 
       steps.forEach((el) => observer.observe(el));
+    }
+
+    /**
+     * Fallback para .process__track-fill en navegadores sin animation-timeline
+     * (ej. Firefox): sin esto la línea de progreso se queda fija en height: 0%
+     * para siempre, porque solo se anima dentro del bloque @supports en CSS.
+     * Replica el efecto con scroll, throttleado a un frame por tick.
+     */
+    function initTrackFillFallback() {
+      if (supportsScrollTimeline()) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const track = document.querySelector('.process__track');
+      const fill = document.querySelector('.process__track-fill');
+      if (!track || !fill) return;
+
+      let ticking = false;
+      const update = () => {
+        const rect = track.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const total = rect.height + vh;
+        const traveled = vh - rect.top;
+        const progress = Math.min(1, Math.max(0, total > 0 ? traveled / total : 0));
+        fill.style.height = `${progress * 100}%`;
+        ticking = false;
+      };
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      };
+
+      update();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
     }
 
     function initYear() {
