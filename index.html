@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tracciona: ayudamos a tu negocio a conseguir más clientes</title>
+  <meta name="description" content="Agencia de marketing para negocios que venden hablando con sus clientes: por llamada, videollamada o reunión. Sin promesas vacías.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tracciona: más llamadas, más cierres, más clientes.">
+  <meta property="og:description" content="Agencia de marketing para negocios que venden hablando con sus clientes: por llamada, videollamada o reunión. Sin promesas vacías.">
+  <meta property="og:url" content="https://tracciona.net">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315171B'/%3E%3Ccircle cx='32' cy='32' r='16' stroke='%23EFEBE2' stroke-width='6.5' fill='none'/%3E%3Cline x1='32' y1='32' x2='41.4' y2='22.6' stroke='%23E4572E' stroke-width='6.5' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Preconnect a Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@800&family=Archivo:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       Tracciona — Design tokens
+       ========================================================================== */
+    :root {
+      --bg-primary: #15171B;
+      --bg-secondary: #1D1F23;
+      --bg-elevated: #232529;
+      --border-subtle: #27292D;
+      --border-strong: #35373B;
+
+      --text-primary: #EFEBE2;
+      --text-secondary: #C9C6BD;
+      --text-muted: #8A8D93;
+
+      --accent: #E4572E;
+      --accent-hover: #EC7154;
+      --accent-text: #15171B;
+
+      --font-display: 'Archivo Expanded', sans-serif;
+      --font-body: 'Archivo', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      --fs-hero: clamp(2.75rem, 6vw + 1rem, 5.5rem);
+      --fs-h2: clamp(2rem, 3.4vw + 1rem, 3.25rem);
+      --fs-h2-lg: clamp(2.25rem, 4.4vw + 1rem, 4.25rem);
+      --fs-h2-sm: clamp(1.5rem, 2.2vw + 1rem, 2.15rem);
+      --fs-h3: clamp(1.25rem, 1.2vw + 1rem, 1.6rem);
+      --fs-body-lg: clamp(1.05rem, 0.5vw + 1rem, 1.25rem);
+      --fs-body: 1rem;
+      --fs-small: 0.875rem;
+      --fs-mono: 0.8125rem;
+
+      --space-3xs: 0.25rem;
+      --space-2xs: 0.5rem;
+      --space-xs: 0.75rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.5rem;
+      --space-xl: 4rem;
+      --space-2xl: 6rem;
+      --space-3xl: 9rem;
+
+      --container-max: 1180px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-fast: 180ms;
+      --dur-hover: 220ms;
+      --dur-base: 400ms;
+      --dur-slow: 700ms;
+    }
+
+    /* ==========================================================================
+       Reset y estilos base
+       ========================================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; color-scheme: dark; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        /* Reduced motion no es cero motion: solo quitamos el movimiento
+           (transform). Los cambios de color/opacity que ayudan a entender
+           un estado (hover, foco, abrir el menú) se mantienen suaves. */
+        transition-property: color, background-color, border-color, box-shadow, opacity !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img, svg { display: block; max-width: 100%; }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      line-height: 1.1;
+      margin: 0;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+    }
+
+    p { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    input, textarea, select { font-family: inherit; font-size: inherit; color: inherit; background: none; border: none; }
+    ul { list-style: none; margin: 0; padding: 0; }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: -100px;
+      background: var(--accent);
+      color: var(--accent-text);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      z-index: 1000;
+      transition: top var(--dur-fast) var(--ease-out);
+    }
+    .skip-link:focus { top: 1rem; }
+
+    .container {
+      max-width: var(--container-max);
+      margin-inline: auto;
+      padding-inline: var(--space-md);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    section { position: relative; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2xs);
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+    }
+    [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal] { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ==========================================================================
+       Componentes de página
+       ========================================================================== */
+    /* Fondo: anillos concéntricos, atmósfera de página completa — no un glow
+       centrado en el mismo punto que el ícono grande del hero (eso emborronaba
+       ambos efectos). El ícono es el único elemento nítido en su esquina. */
+    body { background: var(--bg-primary); }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-radial-gradient(circle at 50% -12%, transparent 0 46px, rgba(239, 235, 226, 0.025) 47px 48px);
+      z-index: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2xs);
+      padding: 0.9rem 1.75rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+    }
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary { background: var(--accent); color: var(--accent-text); }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); }
+    /* Con :hover y :active a la vez (clic normal con mouse), :hover ganaba por
+       especificidad y el scale de presión nunca se veía en el CTA principal. */
+    .btn-primary:hover:active { transform: translateY(-2px) scale(0.97); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+    }
+    /* Sin "lift": el secundario solo ilumina el borde, para que el levantamiento
+       quede reservado a la acción primaria y la jerarquía se sienta en el hover. */
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn__arrow { display: inline-block; transition: transform var(--dur-hover) var(--ease-out); }
+    .btn:hover .btn__arrow { transform: translateX(4px); }
+
+    .btn-block { width: 100%; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 12, 15, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      padding-block: var(--space-sm);
+    }
+    /* En pantallas angostas el logo+tagline y el botón no cabían en una fila
+       y quedaban superpuestos: se achica el lockup y se oculta la tagline
+       para dejarle espacio real al botón. */
+    @media (max-width: 480px) {
+      .brand-lockup__tagline { display: none; }
+      .brand-lockup__icon { width: 1.7rem; height: 1.7rem; }
+      .brand-lockup__word { font-size: 1.1rem; }
+      .nav__cta { padding: 0.65rem 1rem; font-size: 0.85rem; }
+    }
+
+    /* Lockup de marca: ícono oficial (círculo + aguja) en SVG + wordmark en HTML/CSS.
+       El wordmark se compone en HTML (no en coordenadas SVG fijas) para que el punto
+       cuadrado quede siempre pegado al texto, sin depender de métricas de fuente
+       calculadas por la herramienta de diseño original. */
+    /* flex-start, no center: con 3 líneas en el footer (wordmark+tagline+dominio)
+       centrar contra todo el bloque corría el ícono hacia abajo, desalineado
+       respecto a "TRACCIONA". */
+    .brand-lockup { display: inline-flex; align-items: flex-start; gap: var(--space-xs); }
+    .brand-lockup__icon { width: 2.1rem; height: 2.1rem; flex-shrink: 0; }
+    .brand-lockup__text { display: flex; flex-direction: column; line-height: 1; }
+    .brand-lockup__word {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+    }
+    .brand-lockup__tagline {
+      margin-top: 0.25rem;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+    }
+
+    .dot-sq {
+      display: inline-block;
+      width: 0.16em;
+      height: 0.16em;
+      background: var(--accent);
+      margin-left: 0.05em;
+      border-radius: 1px;
+    }
+
+    /* Header simplificado a logo + un solo CTA (sin links de nav): en una
+       landing corta de una sola página, el menú de anclas no aportaba —
+       "Contacto" ya duplicaba el CTA, y "Servicios"/"Casos" no calzaban bien
+       con el contenido real de esas secciones. Se puede reintroducir un nav
+       más adelante si el sitio crece a algo con más profundidad. */
+    .nav__cta { flex-shrink: 0; }
+
+    .hero {
+      padding-block: clamp(var(--space-2xl), 12vw, var(--space-3xl)) var(--space-2xl);
+      position: relative;
+      overflow: hidden;
+    }
+    /* .hero__inner ya NO limita el ancho del propio .container (eso recentraba
+       todo el bloque y lo desalineaba del nav). El max-width vive en un wrapper
+       hijo (.hero__copy) para que el borde izquierdo quede siempre alineado
+       con el logo del header. */
+    .hero__inner { position: relative; z-index: 1; }
+    .hero__copy { max-width: 880px; }
+    .hero__eyebrow { margin-bottom: var(--space-md); }
+
+    .hero h1 { font-size: var(--fs-hero); }
+    .hero h1 .accent { color: var(--accent); }
+    /* Cada línea entra por separado (en vez de todo el h1 de un bloque):
+       refuerza la progresión llamadas → cierres → clientes. */
+    .hero__line { display: block; }
+    .hero__manifesto {
+      margin-top: var(--space-sm);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+    .hero__subtext {
+      margin-top: var(--space-md);
+      max-width: 620px;
+      font-size: var(--fs-body-lg);
+      color: var(--text-secondary);
+    }
+    .hero__actions { margin-top: var(--space-lg); display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+
+    .section { padding-block: var(--space-2xl); border-top: 1px solid var(--border-subtle); position: relative; }
+    /* Ritmo entre secciones: sin esto, Servicios/Cómo funciona/Resultados
+       comparten el mismo fondo y solo un hairline las separa. */
+    .section--tinted { background: var(--bg-secondary); }
+    .section__header { max-width: 640px; margin-bottom: var(--space-xl); }
+    .section__header h2 { margin-top: var(--space-sm); font-size: var(--fs-h2); }
+    /* Variación de escala entre secciones: título corto = más grande, título
+       largo = más contenido, para que no todas pesen igual. */
+    .section__header--lg h2 { font-size: var(--fs-h2-lg); }
+    .section__header--sm h2 { font-size: var(--fs-h2-sm); }
+    .section__header p { margin-top: var(--space-sm); color: var(--text-secondary); font-size: var(--fs-body-lg); }
+
+    /* Bento real: una celda ancla (grande, ocupa 2 filas) + dos chicas apiladas
+       + una banda ancha con fondo distinto. 4 items, 4 celdas, ninguna vacía. */
+    .pillars {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: var(--border-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    @media (min-width: 700px) {
+      .pillars {
+        grid-template-columns: 1.4fr 1fr;
+        grid-template-areas:
+          "a b"
+          "a c"
+          "d d";
+      }
+      .pillar:nth-child(1) { grid-area: a; display: flex; flex-direction: column; justify-content: center; }
+      .pillar:nth-child(2) { grid-area: b; }
+      .pillar:nth-child(3) { grid-area: c; }
+      .pillar--tech { grid-area: d; }
+
+      /* La celda ancla es el doble de alta que las demás — su título debe
+         notarse como tal, no quedar centrado a la misma escala que las
+         tarjetas chicas. El número de fondo también crece con la celda. */
+      .pillar:nth-child(1) h3 { font-size: var(--fs-h2-sm); }
+      .pillar:nth-child(1) .pillar__index { font-size: 5rem; }
+    }
+    .pillar {
+      position: relative;
+      background: var(--bg-secondary);
+      padding: var(--space-lg) var(--space-md);
+      transition: background var(--dur-hover) var(--ease-out);
+    }
+    .pillar:hover { background: var(--bg-elevated); }
+    /* Spotlight border: el borde se ilumina en la posición exacta del cursor
+       (--mx/--my los fija JS en mousemove). Solo en dispositivos con mouse real. */
+    .pillar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 1px;
+      border-radius: inherit;
+      background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(228, 87, 46, 0.55), transparent 65%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity var(--dur-hover) var(--ease-out);
+      pointer-events: none;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .pillar:hover::before { opacity: 1; }
+    }
+    .pillar h3 { font-size: var(--fs-h3); position: relative; z-index: 1; }
+    .pillar p { margin-top: var(--space-2xs); color: var(--text-secondary); position: relative; z-index: 1; }
+    .pillar--tech > div { position: relative; z-index: 1; }
+
+    /* Número de sistema de fondo: hace eco de la numeración de "Cómo
+       funciona" — refuerza el propio título de la sección ("un sistema",
+       no cuatro ideas sueltas) y llena el espacio muerto de la celda ancla
+       con algo funcional, no decorativo. */
+    .pillar__index {
+      position: absolute;
+      right: var(--space-md);
+      bottom: var(--space-xs);
+      z-index: 0;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: 2.5rem;
+      line-height: 1;
+      color: var(--border-strong);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Detalle con vida real (no decorativo): "Constante" habla de trabajo
+       continuo, así que un punto que pulsa + texto es una afirmación de
+       proceso, no una cifra inventada — mismo lenguaje visual que el
+       "en línea" del mockup de WhatsApp del hero. */
+    .pillar__status {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2xs);
+      margin-top: var(--space-md);
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono);
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+    .pillar__status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      animation: pillar-pulse 2s var(--ease-in-out) infinite;
+    }
+    @keyframes pillar-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pillar__status-dot { animation: none; }
+    }
+
+    /* Celda con variación real de fondo: la única condición del bento es que
+       no todas las celdas sean texto plano sobre el mismo color. */
+    .pillar--tech {
+      background: linear-gradient(135deg, var(--bg-secondary), rgba(228, 87, 46, 0.12));
+    }
+    .pillar--tech:hover { background: linear-gradient(135deg, var(--bg-elevated), rgba(228, 87, 46, 0.16)); }
+    /* El fondo degradado se aclara justo donde vive el número (esquina
+       inferior derecha), así que el mismo gris que funciona en las otras
+       3 tarjetas casi no se nota acá — necesita más presencia, no otro tono. */
+    .pillar--tech .pillar__index { color: rgba(228, 87, 46, 0.3); }
+    @media (min-width: 700px) {
+      .pillar--tech { display: flex; align-items: center; }
+    }
+
+    .process { display: grid; gap: var(--space-md); position: relative; }
+    .process-step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-md);
+      padding: var(--space-lg) 0;
+      border-top: 1px solid var(--border-subtle);
+      position: relative;
+    }
+    .process-step:first-child { border-top: none; padding-top: 0; }
+    .process-step__num { font-family: var(--font-mono); font-size: 1.5rem; color: var(--text-muted); min-width: 3ch; }
+    /* Title case en vez de mayúscula sostenida: el manual permite ambas formas,
+       y estos títulos son los más largos del sitio — la mayúscula continua
+       cuesta más de leer aquí que en los H1/H2, que son cortos. */
+    .process-step__body h3 { font-size: var(--fs-h3); text-transform: none; }
+    .process-step__body p { margin-top: var(--space-2xs); color: var(--text-secondary); max-width: 640px; }
+    /* Línea de ruta: conecta los 4 números en una sola columna vertical,
+       convirtiendo la lista plana en una hoja de ruta. Solo a partir de 700px,
+       que es donde la columna de números tiene un ancho fijo (100px) y la
+       posición horizontal de la línea es predecible. El relleno de color
+       (__track-fill) avanza con el scroll — progressive enhancement puro en
+       CSS, sin JS; se apaga con prefers-reduced-motion igual que el resto
+       de las animaciones scroll-linked del sitio. */
+    .process__track { display: none; }
+    @media (min-width: 700px) {
+      .process-step { grid-template-columns: 100px 1fr; align-items: baseline; }
+      .process__track {
+        display: block;
+        position: absolute;
+        left: 50px;
+        top: 6px;
+        bottom: 6px;
+        width: 1px;
+        background: var(--border-subtle);
+        z-index: 0;
+        /* Timeline con nombre, anclada a esta caja (que no cambia de tamaño),
+           para que el relleno de abajo no se anime respecto a su propia altura
+           — eso causaría un ciclo (la caja crece mientras se mide a sí misma). */
+        view-timeline-name: --process-line;
+        view-timeline-axis: block;
+      }
+      .process__track-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 0%;
+        background: var(--accent);
+      }
+      @supports (animation-timeline: view()) {
+        .process__track-fill {
+          animation: process-track-fill linear both;
+          animation-timeline: --process-line;
+          animation-range: cover 10% cover 90%;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .process__track-fill { animation: none; height: 100%; }
+      }
+    }
+    @keyframes process-track-fill {
+      from { height: 0%; }
+      to { height: 100%; }
+    }
+
+    /* Sin cifras inventadas: las 3 tarjetas pesan lo mismo, describen QUÉ se
+       reporta, no un número de ejemplo hecho pasar por resultado real. */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-sm);
+    }
+    /* Conector de secuencia: refuerza que las 3 cajas son un embudo (leads →
+       reuniones → ventas), no tres datos sueltos. Solo en el layout de 3
+       columnas — en mobile las cajas ya se apilan una debajo de otra, lo que
+       de por sí se lee como secuencia sin necesitar la flecha. */
+    .metrics__arrow { display: none; }
+    @media (min-width: 700px) {
+      /* 1.15fr / 1fr / 0.85fr en vez de tres columnas iguales: un eco visual
+         del embudo (leads → reuniones → ventas), no un gráfico de datos —
+         no hay eje, ni porcentaje, ni proporción real detrás de estos números.
+         La diferencia es sutil a propósito para que no se lea como una cifra
+         de conversión que el cliente todavía no tiene. */
+      .metrics { grid-template-columns: 1.15fr auto 1fr auto 0.85fr; align-items: center; }
+      .metrics__arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--border-strong);
+        font-family: var(--font-mono);
+        font-size: 1.25rem;
+      }
+    }
+    .metric-card {
+      position: relative;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg) var(--space-md);
+      transition: background var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      /* El box-shadow suma un resplandor exterior suave además del anillo de
+         abajo — sobre un fondo claro, un anillo solo (la técnica de .pillar,
+         pensada para fondo oscuro) no alcanza a notarse lo suficiente. */
+      .metric-card:hover {
+        background: var(--bg-elevated);
+        box-shadow: 0 14px 28px -16px rgba(228, 87, 46, 0.45);
+      }
+    }
+    /* Mismo spotlight de borde que .pillar (--mx/--my los fija initPillarSpotlight,
+       que ahora también observa .metric-card): para que estas cajas se sientan
+       parte del mismo sistema visual y no una sección aparte al final.
+       Anillo más grueso y más opaco que en .pillar (3px y 1 en vez de 1px y
+       0.55): sobre el fondo claro de esta sección el mismo valor que en
+       .pillar (fondo oscuro) casi no se notaba — el contraste contra un fondo
+       claro es naturalmente menor. */
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 3px;
+      border-radius: inherit;
+      background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(228, 87, 46, 1), transparent 68%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity var(--dur-hover) var(--ease-out);
+      pointer-events: none;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .metric-card:hover::before { opacity: 1; }
+    }
+    /* Etiqueta tipo instrumento: hace eco de la numeración de "Cómo funciona"
+       para que esta sección se lea como panel de control, no como tres
+       tarjetas de marketing genéricas. */
+    .metric-card__tag {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--space-2xs);
+      position: relative;
+      z-index: 1;
+    }
+    .metric-card__label {
+      font-family: var(--font-display);
+      font-size: var(--fs-h3);
+      font-weight: 700;
+      color: var(--text-primary);
+      position: relative;
+      z-index: 1;
+    }
+    .metric-card__desc { margin-top: var(--space-2xs); color: var(--text-secondary); position: relative; z-index: 1; }
+
+    .cta-section {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .cta-grid { display: grid; gap: var(--space-xl); }
+    @media (min-width: 900px) { .cta-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
+    .cta-copy h2 { font-size: var(--fs-h2); }
+    .cta-copy p { margin-top: var(--space-sm); color: var(--text-secondary); font-size: var(--fs-body-lg); max-width: 480px; }
+    .cta-alt { margin-top: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-xs); }
+    .cta-alt__label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    /* Spinner del botón "Enviar": oculto por defecto, aparece mientras se
+       envía. Un giro rápido mejora la percepción de velocidad aunque el
+       tiempo real de envío no cambie. */
+    .btn__spinner {
+      display: none;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(21, 23, 27, 0.3);
+      border-top-color: var(--accent-text);
+      border-radius: 50%;
+      animation: btn-spin 600ms linear infinite;
+    }
+    .btn[data-loading="true"] .btn__spinner { display: inline-block; }
+    .btn[data-loading="true"] .btn__label { opacity: 0.85; }
+    @keyframes btn-spin {
+      to { transform: rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .btn__spinner { animation: none; }
+    }
+
+    .form {
+      /* --bg-elevated (no --bg-primary): dentro de .cta-section (--bg-secondary)
+         el formulario debe leerse como un panel propio, no como un agujero
+         que vuelve al fondo general de la página. */
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      display: grid;
+      gap: var(--space-md);
+    }
+    .form-field { display: grid; gap: var(--space-2xs); }
+    .form-field label { font-size: var(--fs-small); color: var(--text-secondary); }
+    .form-field input, .form-field select {
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem var(--space-sm);
+      background: var(--bg-secondary);
+      transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+    }
+    /* Anillo de foco sutil, no solo cambio de borde: el detalle que separa un
+       formulario plano de uno premium. */
+    .form-field input:focus, .form-field select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(228, 87, 46, 0.15); }
+    .form-field input:invalid[data-touched="true"] { border-color: #E5484D; }
+
+    /* Código de país + número en una fila: el código nunca necesita crecer,
+       el número toma el resto del ancho disponible. */
+    .phone-group { display: flex; gap: var(--space-2xs); }
+    .phone-group__code { flex: 0 0 auto; width: 5.5rem; cursor: pointer; }
+    .phone-group__number { flex: 1; min-width: 0; }
+    .form-field__error { font-size: 0.8rem; color: #E5484D; min-height: 1.1em; }
+    .form-status { font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--text-secondary); min-height: 1.2em; }
+    .form-status[data-state="success"] { color: var(--accent); }
+    .form-status[data-state="error"] { color: #E5484D; }
+
+    .footer { padding-block: var(--space-xl); }
+    .footer__inner { display: grid; gap: var(--space-lg); }
+    @media (min-width: 700px) {
+      .footer__inner { grid-template-columns: 1fr auto auto; align-items: start; }
+    }
+    /* El dominio vive DENTRO de .brand-lockup__text (misma columna que el
+       wordmark y la tagline), no como hijo suelto de .footer__brand — así
+       hereda el mismo margen izquierdo y no queda escalonado bajo el ícono. */
+    .brand-lockup__domain {
+      margin-top: var(--space-md);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono);
+    }
+    .footer__col h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: var(--space-sm);
+    }
+    .footer__col ul { display: grid; gap: var(--space-xs); }
+    .footer__col a { color: var(--text-secondary); font-size: 0.9rem; transition: color var(--dur-fast) var(--ease-out); }
+    .footer__col a:hover { color: var(--accent); }
+    .footer__social { display: inline-flex; align-items: center; gap: var(--space-2xs); }
+    .footer__social svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+    .footer__bottom {
+      margin-top: var(--space-xl);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    /* ==========================================================================
+       Mockup de conversación en el hero — reemplaza el dial gigante de fondo
+       por algo concreto: cómo se ve una conversación real con el Agente de
+       Tracciona calificando y agendando un lead. Mismo principio que usa la
+       landing de Vera: mostrar el producto en uso, no solo nombrarlo.
+       ========================================================================== */
+    .hero__mock { position: relative; }
+    .chat-mock {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md);
+      max-width: 380px;
+      margin-inline: auto;
+    }
+    .chat-mock__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: var(--space-sm);
+      margin-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono);
+    }
+    .chat-mock__title { color: var(--text-primary); font-weight: 500; }
+    .chat-mock__status { display: inline-flex; align-items: center; gap: var(--space-3xs); color: var(--accent); }
+    .chat-mock__status::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .chat-mock__body { display: flex; flex-direction: column; gap: var(--space-xs); }
+    .chat-bubble {
+      padding: 0.65rem 0.9rem;
+      border-radius: var(--radius-md);
+      font-size: var(--fs-small);
+      max-width: 82%;
+      line-height: 1.4;
+    }
+    .chat-bubble--in {
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+    .chat-bubble--out {
+      background: var(--accent);
+      color: var(--accent-text);
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+      font-weight: 600;
+    }
+    /* Tarjeta flotante superpuesta, igual que el patrón de notificación de Vera:
+       hace tangible el resultado (sesión agendada) sin otra sección aparte.
+       Se sale un poco del borde del mockup (left negativo) + sombra marcada
+       + z-index por encima: sin esto quedaba pegada al borde del chat, como
+       una etiqueta más, no como una tarjeta flotando sobre la pantalla. */
+    .hero__notify {
+      position: absolute;
+      left: calc(var(--space-md) * -1);
+      bottom: calc(var(--space-lg) * -1.4);
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: var(--space-xs) var(--space-sm);
+      box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.65), 0 8px 20px -10px rgba(228, 87, 46, 0.3);
+    }
+    .hero__notify-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .hero__notify-text { display: flex; flex-direction: column; }
+    .hero__notify-title { font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--text-primary); font-weight: 500; }
+    .hero__notify-time { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+
+    @media (max-width: 999px) {
+      .hero__mock { margin-top: var(--space-xl); max-width: 380px; margin-inline: auto; }
+    }
+    @media (min-width: 1000px) {
+      /* align-items: start (no center): con el h1 más corto (3 líneas) el
+         mockup quedaba centrado más abajo de lo que se ve bien — sube y
+         queda a la altura del eyebrow/botón del header. */
+      .hero__inner { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-xl); align-items: start; }
+      .hero__copy { max-width: none; }
+      /* La columna se reduce a la mitad del ancho del container: el tamaño
+         de --fs-hero pensado para todo el ancho hacía que "LLAMADAS." /
+         "CIERRES." partieran línea. Escala propia para este layout. */
+      .hero h1 { font-size: clamp(2.5rem, 3.4vw + 1rem, 4.25rem); }
+    }
+
+    /* ==========================================================================
+       Lectura tipo instrumento para la numeración de "Cómo funciona" — refuerza
+       la metáfora del dial/mando del manual de marca en vez de un "01" plano
+       sin relación con el resto del sistema visual.
+       ========================================================================== */
+    .process-step__num {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      min-width: unset;
+      padding: var(--space-2xs) var(--space-sm);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: var(--bg-elevated);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .process-step__num::before {
+      content: '';
+      width: 14px;
+      height: 2px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    /* Número activo: se resalta el paso que está cruzando el centro de la
+       pantalla, uno a la vez.
+       La clase .is-active (puesta por initActiveStep(), abajo en el script)
+       es el fallback para navegadores sin scroll-timelines — usa
+       IntersectionObserver, que a veces no detecta el cruce con precisión
+       en un scroll muy rápido.
+       Donde el navegador SÍ soporta animation-timeline: view() (bloque de
+       @supports más abajo), se reemplaza por 
