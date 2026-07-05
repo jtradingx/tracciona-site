@@ -269,12 +269,17 @@
       /* El botón nunca puede achicarse (white-space: nowrap en .btn +
          flex-shrink: 0 en .nav__cta): en vez de forzarlo a convivir en una
          sola fila con el logo (lo que lo hacía overlapear), se permite que
-         el header pase a dos filas cuando no entran ambos completos. */
+         el header pase a dos filas cuando no entran ambos completos.
+         El botón ocupa el ancho completo de esa segunda fila (flex-basis:
+         100%) en vez de quedar como un chip chico pegado a la izquierda —
+         eso es lo que se veía "desequilibrado": mucho espacio vacío a la
+         derecha, como si sobrara. A ancho completo se lee como una fila
+         propia e intencional, no como un resto. */
       .nav__inner { flex-wrap: wrap; row-gap: var(--space-sm); }
       .brand-lockup__tagline { display: none; }
       .brand-lockup__icon { width: 1.7rem; height: 1.7rem; }
       .brand-lockup__word { font-size: 1.1rem; white-space: nowrap; }
-      .nav__cta { padding: 0.65rem 1rem; font-size: 0.85rem; }
+      .nav__cta { flex: 1 1 100%; justify-content: center; padding: 0.8rem 1rem; font-size: 0.9rem; }
     }
 
     /* Lockup de marca: ícono oficial (círculo + aguja) en SVG + wordmark en HTML/CSS.
@@ -328,7 +333,13 @@
        opuestas (arriba-derecha, abajo-izquierda) + grilla fina, igual que en
        landing.html. Se perdió en una reconstrucción anterior de este archivo
        (quedó solo el anillo concéntrico casi invisible de body::before) — se
-       restaura acá para devolver la "atmósfera" que tenía el sitio. */
+       restaura acá para devolver la "atmósfera" que tenía el sitio.
+       Radios en px fijos (circle 600px / 460px), NO en % del contenedor: en
+       mobile el hero se estira mucho más alto (copy + mockup apilados), y un
+       radio en % de un contenedor así de alto se convertía en una franja
+       naranja sólida corriendo todo el borde en vez de un resplandor de
+       esquina. Con px fijos el glow se queda como acento de esquina sin
+       importar cuánto crezca el hero verticalmente. */
     .hero::before {
       content: '';
       position: absolute;
@@ -336,12 +347,10 @@
       z-index: 0;
       pointer-events: none;
       background:
-        radial-gradient(55% 60% at 84% 8%, rgba(228, 87, 46, 0.22), transparent 60%),
-        radial-gradient(42% 45% at 6% 92%, rgba(228, 87, 46, 0.12), transparent 65%),
+        radial-gradient(600px circle at calc(100% + 120px) -80px, rgba(228, 87, 46, 0.20), transparent 70%),
+        radial-gradient(460px circle at -100px 100%, rgba(228, 87, 46, 0.10), transparent 70%),
         repeating-linear-gradient(90deg, rgba(239, 235, 226, 0.04) 0 1px, transparent 1px 96px),
         repeating-linear-gradient(0deg, rgba(239, 235, 226, 0.04) 0 1px, transparent 1px 96px);
-      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 92%);
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 92%);
     }
     /* .hero__inner ya NO limita el ancho del propio .container (eso recentraba
        todo el bloque y lo desalineaba del nav). El max-width vive en un wrapper
