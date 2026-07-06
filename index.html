@@ -336,7 +336,10 @@
     .nav__cta { flex-shrink: 0; }
 
     .hero {
-      padding-block: clamp(var(--space-2xl), 12vw, var(--space-3xl)) var(--space-2xl);
+      /* El padding-top anterior (piso 6rem/96px, techo 9rem/144px) dejaba
+         demasiado aire entre el header y el contenido, sobre todo en mobile
+         donde 96px es una porción grande de un viewport chico. */
+      padding-block: clamp(2rem, 8vw, 4.5rem) var(--space-2xl);
       position: relative;
       overflow: hidden;
     }
@@ -1394,6 +1397,23 @@
       );
 
       items.forEach((el) => observer.observe(el));
+
+      /* Fallback: en algunos casos el primer callback de IntersectionObserver
+         no dispara de inmediato (pestaña en segundo plano al cargar, timing
+         del navegador, etc.), dejando contenido ya visible en pantalla
+         (como el hero) con opacity:0 hasta el primer scroll. Forzamos una
+         comprobación manual tras el primer pintado para que nada above-the-fold
+         quede invisible. */
+      requestAnimationFrame(() => {
+        items.forEach((el) => {
+          if (el.classList.contains('is-visible')) return;
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('is-visible');
+            observer.unobserve(el);
+          }
+        });
+      });
     }
 
     function initContactForm() {
