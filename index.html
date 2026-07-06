@@ -18,7 +18,12 @@
   <!-- Preconnect a Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@800&family=Archivo:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- "Archivo Expanded" no existe como familia propia en Google Fonts (la
+       URL vieja devolvía 404 silencioso y el navegador caía a un sans-serif
+       genérico en TODOS los títulos, sin que se notara). El ancho expandido
+       real se pide como eje de variación de la familia "Archivo" con
+       wdth=125 -- ver font-stretch:125% en --font-display más abajo. -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,400;100,600;125,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================================
@@ -39,7 +44,11 @@
       --accent-hover: #EC7154;
       --accent-text: #15171B;
 
-      --font-display: 'Archivo Expanded', sans-serif;
+      /* "Archivo Expanded" no es un nombre de familia real en Google Fonts
+         -- el ancho expandido se pide como eje wdth=125 de la familia
+         "Archivo" (ver el link de Google Fonts en <head> y font-stretch:125%
+         en cada selector que usa esta variable). */
+      --font-display: 'Archivo', sans-serif;
       --font-body: 'Archivo', sans-serif;
       --font-mono: 'IBM Plex Mono', monospace;
 
@@ -116,7 +125,12 @@
 
     h1, h2, h3, h4 {
       font-family: var(--font-display);
-      font-weight: 700;
+      /* peso 800 + font-stretch 125% -- son los ÚNICOS valores de Archivo
+         que se piden a Google Fonts en el ancho expandido (ver <head>). Con
+         font-weight:700 (sin font-stretch) el navegador podía preferir el
+         match de ancho normal a 600 en vez de la cara expandida real. */
+      font-weight: 800;
+      font-stretch: 125%;
       line-height: 1.1;
       margin: 0;
       letter-spacing: -0.015em;
@@ -290,6 +304,7 @@
     .brand-lockup__text { display: flex; flex-direction: column; line-height: 1; }
     .brand-lockup__word {
       font-family: var(--font-display);
+      font-stretch: 125%;
       font-size: 1.4rem;
       font-weight: 800;
       letter-spacing: -0.01em;
@@ -376,7 +391,8 @@
     .hero__manifesto {
       margin-top: var(--space-sm);
       font-family: var(--font-display);
-      font-weight: 700;
+      font-stretch: 125%;
+      font-weight: 800;
       font-size: 1.1rem;
       color: var(--text-primary);
     }
@@ -680,8 +696,9 @@
     }
     .metric-card__label {
       font-family: var(--font-display);
+      font-stretch: 125%;
       font-size: var(--fs-h3);
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-primary);
       position: relative;
       z-index: 1;
