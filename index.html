@@ -284,9 +284,11 @@
     .nav__cta-full { display: inline; }
     .nav__cta-short { display: none; }
     @media (max-width: 480px) {
-      .brand-lockup__tagline { display: none; }
+      /* La tagline ya no se oculta: con el botón acortado a "Hablemos" sobra
+         espacio para mantener "Performance marketing + IA" visible. */
       .brand-lockup__icon { width: 1.7rem; height: 1.7rem; }
       .brand-lockup__word { font-size: 1.1rem; white-space: nowrap; }
+      .brand-lockup__tagline { font-size: 0.6rem; }
       .nav__cta { padding: 0.75rem 1.1rem; font-size: 0.9rem; }
       .nav__cta-full { display: none; }
       .nav__cta-short { display: inline; }
@@ -336,7 +338,10 @@
     .nav__cta { flex-shrink: 0; }
 
     .hero {
-      padding-block: clamp(var(--space-2xl), 12vw, var(--space-3xl)) var(--space-2xl);
+      /* El padding-top anterior (piso 6rem/96px, techo 9rem/144px) dejaba
+         demasiado aire entre el header y el contenido, sobre todo en mobile
+         donde 96px es una porción grande de un viewport chico. */
+      padding-block: clamp(2rem, 8vw, 4.5rem) var(--space-2xl);
       position: relative;
       overflow: hidden;
     }
@@ -382,8 +387,8 @@
        clientes." casi no tenían aire en mobile angosto (272px de texto en
        un contenedor de 272px). No depender solo de la fórmula del clamp,
        que puede variar por navegador o por el tamaño de fuente del sistema. */
-    @media (max-width: 380px) {
-      .hero h1 { font-size: 2.3rem; }
+    @media (max-width: 430px) {
+      .hero h1 { font-size: 2.1rem; }
     }
     /* Cada línea entra por separado (en vez de todo el h1 de un bloque):
        refuerza la progresión llamadas → cierres → clientes. */
@@ -718,14 +723,6 @@
     @media (min-width: 900px) { .cta-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
     .cta-copy h2 { font-size: var(--fs-h2); }
     .cta-copy p { margin-top: var(--space-sm); color: var(--text-secondary); font-size: var(--fs-body-lg); max-width: 480px; }
-    .cta-alt { margin-top: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-xs); }
-    .cta-alt__label {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-    }
 
     /* Spinner del botón "Enviar": oculto por defecto, aparece mientras se
        envía. Un giro rápido mejora la percepción de velocidad aunque el
@@ -1180,11 +1177,6 @@
         <div class="cta-copy" data-reveal>
           <h2>¿Hablamos de tus próximos clientes?</h2>
           <p>Agenda una llamada de 30 minutos, sin costo, y revisamos cómo podemos ayudarte a generar más demanda, más oportunidades y más reuniones comerciales.</p>
-
-          <div class="cta-alt">
-            <span class="cta-alt__label">Prefieres agendar directo</span>
-            <a href="agenda.html" class="btn btn-secondary" id="bookingLink">Agendar directo <span class="btn__arrow">→</span></a>
-          </div>
         </div>
 
         <form class="form" id="contactForm" novalidate data-reveal style="transition-delay: 80ms;">
