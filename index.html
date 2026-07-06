@@ -288,7 +288,7 @@
          espacio para mantener "Performance marketing + IA" visible. */
       .brand-lockup__icon { width: 1.7rem; height: 1.7rem; }
       .brand-lockup__word { font-size: 1.1rem; white-space: nowrap; }
-      .brand-lockup__tagline { font-size: 0.6rem; }
+      .brand-lockup__tagline { font-size: 0.6rem; white-space: nowrap; }
       .nav__cta { padding: 0.75rem 1.1rem; font-size: 0.9rem; }
       .nav__cta-full { display: none; }
       .nav__cta-short { display: inline; }
@@ -387,8 +387,21 @@
        clientes." casi no tenían aire en mobile angosto (272px de texto en
        un contenedor de 272px). No depender solo de la fórmula del clamp,
        que puede variar por navegador o por el tamaño de fuente del sistema. */
-    @media (max-width: 430px) {
-      .hero h1 { font-size: 2.1rem; }
+    @media (max-width: 480px) {
+      /* Medido con el texto real, no con el contenedor (que no detecta wrap
+         interno de línea): en un dispositivo de 320px el contenedor real es
+         de 272px, y ahí el máximo que entra en una sola línea es 25.5px.
+         Los intentos anteriores (2.1rem, 1.8rem) seguían wrappeando. */
+      .hero h1 { font-size: 1.5rem; }
+    }
+    /* Rango tablet (481-999px): la columna deja de crecer proporcional al
+       viewport (hero__copy topa en max-width:880px bastante antes de los
+       999px), pero --fs-hero seguía escalando con vw todo el camino, y
+       volvía a wrappear "Más llamadas."/"Más clientes." a partir de ~550px
+       de columna. Medido con el texto real: a 552px de columna el máximo
+       que entra es 51px; a 837px ya no hay problema. */
+    @media (min-width: 481px) and (max-width: 999px) {
+      .hero h1 { font-size: clamp(1.9rem, 6.2vw + 0.4rem, 3.3rem); }
     }
     /* Cada línea entra por separado (en vez de todo el h1 de un bloque):
        refuerza la progresión llamadas → cierres → clientes. */
@@ -908,10 +921,15 @@
          queda a la altura del eyebrow/botón del header. */
       .hero__inner { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-xl); align-items: start; }
       .hero__copy { max-width: none; }
-      /* La columna se reduce a la mitad del ancho del container: el tamaño
-         de --fs-hero pensado para todo el ancho hacía que "LLAMADAS." /
-         "CIERRES." partieran línea. Escala propia para este layout. */
-      .hero h1 { font-size: clamp(2.5rem, 3.4vw + 1rem, 4.25rem); }
+      /* La columna se reduce a la mitad del ancho del container (~641px una
+         vez que el container llega a su max-width de 1180px) y NO sigue
+         creciendo después de eso — pero el tamaño con vw sí seguía creciendo
+         con el viewport, así que en pantallas anchas (1440px+) el texto
+         terminaba pidiendo más ancho del que la columna realmente tiene.
+         Medido con el texto real: "Más llamadas."/"Más clientes." necesitan
+         ~700px a 68px de fuente, pero la columna solo da ~641px. Techo bajado
+         a 3.6rem (57.6px) para que quepan con margen en cualquier ancho. */
+      .hero h1 { font-size: clamp(2.25rem, 2.6vw + 0.8rem, 3.6rem); }
     }
 
     /* ==========================================================================
