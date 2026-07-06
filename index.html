@@ -55,7 +55,11 @@
       --fs-hero: clamp(2.35rem, 7vw + 0.7rem, 5.5rem);
       --fs-h2: clamp(2rem, 3.4vw + 1rem, 3.25rem);
       --fs-h2-lg: clamp(2.25rem, 4.4vw + 1rem, 4.25rem);
-      --fs-h2-sm: clamp(1.5rem, 2.2vw + 1rem, 2.15rem);
+      /* Piso subido de 1.5rem a 1.65rem: en mobile este H2 quedaba a solo
+         1.18x el tamaño de los H3 de sus propias tarjetas (24.25px vs
+         20.5px) — por debajo del mínimo de 1.25x para que se note la
+         jerarquía. */
+      --fs-h2-sm: clamp(1.65rem, 2.2vw + 1.1rem, 2.15rem);
       --fs-h3: clamp(1.25rem, 1.2vw + 1rem, 1.6rem);
       --fs-body-lg: clamp(1.05rem, 0.5vw + 1rem, 1.25rem);
       --fs-body: 1rem;
@@ -340,8 +344,10 @@
     .hero {
       /* El padding-top anterior (piso 6rem/96px, techo 9rem/144px) dejaba
          demasiado aire entre el header y el contenido, sobre todo en mobile
-         donde 96px es una porción grande de un viewport chico. */
-      padding-block: clamp(2rem, 8vw, 4.5rem) var(--space-2xl);
+         donde 96px es una porción grande de un viewport chico. El padding
+         inferior tenía el mismo problema (96px fijo en todos los anchos) —
+         mismo tratamiento responsivo que el resto de las secciones. */
+      padding-block: clamp(2rem, 8vw, 4.5rem) clamp(2.5rem, 6vw + 1.5rem, 6rem);
       position: relative;
       overflow: hidden;
     }
@@ -422,11 +428,15 @@
     }
     .hero__actions { margin-top: var(--space-lg); display: flex; flex-wrap: wrap; gap: var(--space-sm); }
 
-    .section { padding-block: var(--space-2xl); border-top: 1px solid var(--border-subtle); position: relative; }
+    /* padding-block fijo en 96px (--space-2xl) en todos los anchos dejaba
+       192px de aire vacío en cada transición de sección — ~21% de una
+       pantalla de teléfono. Con clamp() se reduce a ~46px en mobile y
+       mantiene los 96px originales en desktop. */
+    .section { padding-block: clamp(2.5rem, 6vw + 1.5rem, 6rem); border-top: 1px solid var(--border-subtle); position: relative; }
     /* Ritmo entre secciones: sin esto, Servicios/Cómo funciona/Resultados
        comparten el mismo fondo y solo un hairline las separa. */
     .section--tinted { background: var(--bg-secondary); }
-    .section__header { max-width: 640px; margin-bottom: var(--space-xl); }
+    .section__header { max-width: 640px; margin-bottom: clamp(2rem, 5vw + 1rem, 4rem); }
     .section__header h2 { margin-top: var(--space-sm); font-size: var(--fs-h2); }
     /* Variación de escala entre secciones: título corto = más grande, título
        largo = más contenido, para que no todas pesen igual. */
