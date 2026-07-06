@@ -336,10 +336,7 @@
     .nav__cta { flex-shrink: 0; }
 
     .hero {
-      /* El padding-top anterior (piso 6rem/96px, techo 9rem/144px) dejaba
-         demasiado aire entre el header y el contenido, sobre todo en mobile
-         donde 96px es una porción grande de un viewport chico. */
-      padding-block: clamp(2rem, 8vw, 4.5rem) var(--space-2xl);
+      padding-block: clamp(var(--space-2xl), 12vw, var(--space-3xl)) var(--space-2xl);
       position: relative;
       overflow: hidden;
     }
