@@ -129,9 +129,36 @@
          una edición futura) esto evita el scroll horizontal en mobile en vez
          de exponerlo. */
       overflow-x: hidden;
+      /* Deja espacio abajo para que la barra fija de WhatsApp no tape el
+         footer. Mismo patrón que landing.html (funnel de tráfico pagado). */
+      padding-bottom: 3rem;
     }
 
     img, svg { display: block; max-width: 100%; }
+
+    /* Barra fija de WhatsApp — mismo tratamiento que landing.html: franja
+       sólida de acento, texto en Carbón (--accent-text) sobre Señal, que sí
+       pasa AA (4.87:1) a diferencia de Hueso sobre Señal (3.10:1). */
+    .whatsapp-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2xs);
+      padding: 0.75rem var(--space-md);
+      background: var(--accent);
+      color: var(--accent-text);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: background var(--dur-hover) var(--ease-out);
+    }
+    .whatsapp-bar svg { width: 18px; height: 18px; flex-shrink: 0; fill: var(--accent-text); }
+    .whatsapp-bar:hover { background: var(--accent-hover); }
 
     h1, h2, h3, h4 {
       font-family: var(--font-display);
@@ -433,6 +460,15 @@
       color: var(--text-secondary);
     }
     .hero__actions { margin-top: var(--space-lg); display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+    /* Colchón extra contra la barra fija de WhatsApp (mismo tipo de problema
+       resuelto en landing.html): en viewports bajos (navegador con mucha UI
+       encima, ej. Chrome Android) el botón "Quiero tracción real" puede
+       terminar demasiado cerca del borde inferior. Se acorta el margen antes
+       de los botones para ganar aire de sobra. */
+    @media (max-width: 480px) {
+      .hero__subtext { margin-top: var(--space-sm); }
+      .hero__actions { margin-top: var(--space-md); }
+    }
 
     /* padding-block fijo en 96px (--space-2xl) en todos los anchos dejaba
        192px de aire vacío en cada transición de sección — ~21% de una
@@ -1323,6 +1359,11 @@
       © <span id="year"></span> Tracciona. Todos los derechos reservados.
     </div>
   </footer>
+
+  <a href="https://wa.me/56920472259?text=Hola%2C%20vengo%20del%20sitio%20de%20Tracciona%20y%20tengo%20una%20consulta." class="whatsapp-bar" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.09-1.34A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.57 0-3.03-.46-4.26-1.24l-.3-.19-3.02.8.81-2.95-.2-.31A7.93 7.93 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8zm4.29-5.71c-.23-.12-1.37-.68-1.58-.76-.21-.08-.37-.12-.52.12-.15.23-.6.76-.74.92-.14.15-.27.17-.5.06-.23-.12-.98-.36-1.87-1.15-.69-.61-1.16-1.37-1.29-1.6-.14-.23-.01-.36.1-.47.11-.11.23-.27.35-.4.12-.14.15-.23.23-.38.08-.15.04-.29-.02-.4-.06-.12-.52-1.26-.72-1.73-.19-.46-.38-.4-.52-.4h-.44c-.15 0-.4.06-.6.29-.21.23-.79.77-.79 1.87s.81 2.17.93 2.32c.11.15 1.6 2.44 3.87 3.42.54.23.96.37 1.29.47.54.17 1.03.15 1.42.09.43-.06 1.37-.56 1.56-1.1.19-.54.19-1 .13-1.1-.06-.1-.21-.15-.44-.27z"/></svg>
+    ¿Dudas? Escríbenos por WhatsApp
+  </a>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
