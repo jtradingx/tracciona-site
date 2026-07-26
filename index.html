@@ -331,6 +331,13 @@
       .nav__cta-short { display: inline; }
     }
 
+    /* Entre 481 y 560px el CTA largo ("Quiero revisar mi caso") deja muy poco
+       aire con el lockup: se adelanta el texto corto sin achicar la marca. */
+    @media (max-width: 560px) {
+      .nav__cta-full { display: none; }
+      .nav__cta-short { display: inline; }
+    }
+
     /* Lockup de marca: ícono oficial (círculo + aguja) en SVG + wordmark en HTML/CSS.
        El wordmark se compone en HTML (no en coordenadas SVG fijas) para que el punto
        cuadrado quede siempre pegado al texto, sin depender de métricas de fuente
@@ -1083,6 +1090,27 @@
       .footer__bottom { margin-top: var(--space-lg); padding-top: var(--space-sm); }
       .brand-lockup__domain { margin-top: var(--space-sm); }
     }
+
+    /* Secciones problema y cliente ideal (spec copy 2026-07): grillas simples
+       agrupadas por hairlines, sin tarjetas nuevas, respetando el sistema. */
+    .issue-list, .fit-list { display: grid; gap: 1px; background: var(--border-subtle); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; margin-top: clamp(1.5rem, 3vw, 2.5rem); }
+    @media (min-width: 760px) {
+      .issue-list { grid-template-columns: 1fr 1fr; }
+      .fit-list { grid-template-columns: 1fr 1fr; }
+      /* Cantidad impar: el último ocupa la fila completa para no dejar una
+         celda vacía pintada del color del borde de la grilla. */
+      .issue-list .issue:last-child:nth-child(odd),
+      .fit-list .fit:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    }
+    .issue, .fit { display: flex; gap: var(--space-sm); align-items: flex-start; padding: var(--space-md); background: var(--bg-secondary); color: var(--text-secondary); font-size: var(--fs-body-lg); }
+    .issue__mark { flex-shrink: 0; width: 1.4rem; height: 1.4rem; margin-top: 0.1em; display: grid; place-items: center; color: var(--accent); font-family: var(--font-mono); font-size: 1.05rem; line-height: 1; }
+    .fit__mark { flex-shrink: 0; width: 1.4rem; height: 1.4rem; margin-top: 0.15em; }
+    .fit__mark svg { width: 100%; height: 100%; stroke: var(--accent); fill: none; stroke-width: 2.2; }
+    .section__note { margin-top: clamp(1.5rem, 3vw, 2.5rem); padding-left: var(--space-md); border-left: 2px solid var(--accent); color: var(--text-secondary); font-size: var(--fs-body-lg); max-width: 760px; }
+    .metrics-note { margin-top: clamp(1.5rem, 3vw, 2.5rem); color: var(--text-muted); font-size: 0.95rem; max-width: 760px; }
+    .cta-results { margin: var(--space-md) 0 0; display: grid; gap: var(--space-2xs); }
+    .cta-results li { display: flex; gap: var(--space-2xs); align-items: baseline; color: var(--text-secondary); font-size: 0.95rem; }
+    .cta-results li::before { content: ""; flex-shrink: 0; width: 5px; height: 5px; position: relative; top: -0.15em; border-radius: 50%; background: var(--accent); }
   </style>
 </head>
 <body>
@@ -1102,7 +1130,7 @@
       </a>
 
       <a href="#contacto" class="btn btn-primary nav__cta">
-        <span class="nav__cta-full">Quiero tracción real</span>
+        <span class="nav__cta-full">Quiero revisar mi caso</span>
         <span class="nav__cta-short">Hablemos</span>
       </a>
     </div>
@@ -1122,10 +1150,10 @@
           </h1>
           <p class="hero__manifesto" data-reveal style="transition-delay: 240ms;">Sin humo<span class="dot-sq"></span> Solo tracción<span class="dot-sq"></span></p>
           <p class="hero__subtext" data-reveal style="transition-delay: 280ms;">
-            Ayudamos a empresas de servicios a generar más clientes cuando su venta ocurre por llamada, videollamada o reunión.
+            Construimos un sistema de captación y seguimiento que conecta campañas, WhatsApp e inteligencia artificial para transformar la demanda en conversaciones y reuniones comerciales.
           </p>
           <div class="hero__actions" data-reveal style="transition-delay: 360ms;">
-            <a href="#contacto" class="btn btn-primary">Quiero tracción real</a>
+            <a href="#contacto" class="btn btn-primary">Quiero revisar mi caso</a>
             <a href="#como-funciona" class="btn btn-secondary">Ver cómo funciona</a>
           </div>
         </div>
@@ -1154,38 +1182,57 @@
       </div>
     </section>
 
+    <!-- PROBLEMA -->
+    <section class="section section--tinted" id="problema">
+      <div class="container">
+        <div class="section__header" data-reveal>
+          <span class="eyebrow">El punto ciego</span>
+          <h2>Generar consultas no es suficiente</h2>
+          <p>Muchas empresas de servicios ya han probado anuncios, acciones orgánicas o distintos esfuerzos comerciales, pero siguen perdiendo oportunidades porque la captación, la respuesta y el seguimiento funcionan como procesos separados.</p>
+        </div>
+        <div class="issue-list">
+          <div class="issue" data-reveal><span class="issue__mark" aria-hidden="true">01</span><p>Los prospectos reciben una respuesta demasiado tarde.</p></div>
+          <div class="issue" data-reveal style="transition-delay: 50ms;"><span class="issue__mark" aria-hidden="true">02</span><p>El seguimiento depende de tareas manuales.</p></div>
+          <div class="issue" data-reveal style="transition-delay: 100ms;"><span class="issue__mark" aria-hidden="true">03</span><p>Las consultas ingresan, pero no hay claridad sobre cuáles avanzaron.</p></div>
+          <div class="issue" data-reveal style="transition-delay: 150ms;"><span class="issue__mark" aria-hidden="true">04</span><p>Marketing y ventas funcionan como procesos desconectados.</p></div>
+          <div class="issue" data-reveal style="transition-delay: 200ms;"><span class="issue__mark" aria-hidden="true">05</span><p>Se invierte en generar demanda, pero no siempre se mide qué terminó en reunión o venta.</p></div>
+        </div>
+        <p class="section__note" data-reveal>Tracciona conecta esas etapas para que cada oportunidad tenga una ruta clara desde el primer contacto hasta la conversación comercial.</p>
+      </div>
+    </section>
+
     <!-- PILARES -->
     <section class="section" id="servicios">
       <div class="container">
         <div class="section__header" data-reveal>
-          <h2>Un sistema, no una campaña</h2>
-          <p>Cuatro principios que aplicamos con cada cliente.</p>
+          <h2>Un sistema, no una campaña aislada</h2>
+          <p>Los anuncios son solo el punto de entrada. La tracción aparece cuando la captación, la respuesta, el seguimiento y la medición funcionan como un solo sistema.</p>
         </div>
 
         <div class="pillars">
           <div class="pillar" data-reveal>
-            <h3>Constante</h3>
-            <p>No lanzamos una campaña y desaparecemos. Optimizamos semana a semana.</p>
-            <span class="pillar__status"><span class="pillar__status-dot" aria-hidden="true"></span>Optimización cada semana</span>
+            <h3>Optimización continua</h3>
+            <p>Partimos desde una oferta y experiencia comercial que ya cuentan con antecedentes. Revisamos el desempeño, detectamos fricciones y optimizamos el sistema de manera continua.</p>
+            <span class="pillar__status"><span class="pillar__status-dot" aria-hidden="true"></span>Optimización continua del sistema</span>
             <span class="pillar__index" aria-hidden="true">01</span>
           </div>
           <div class="pillar" data-reveal style="transition-delay: 60ms;">
-            <h3>Estructurado</h3>
-            <p>Aplicamos un método claro, repetible y adaptado a tu negocio.</p>
+            <h3>Método estructurado</h3>
+            <p>Aplicamos un proceso claro y repetible, adaptado al ticket, capacidad operativa y modelo comercial de cada empresa.</p>
             <span class="pillar__status"><span class="pillar__status-dot" aria-hidden="true"></span>Mismo método, adaptado a ti</span>
             <span class="pillar__index" aria-hidden="true">02</span>
           </div>
           <div class="pillar" data-reveal style="transition-delay: 120ms;">
-            <h3>Resultados reales</h3>
-            <p>No nos quedamos en clics. Medimos prospectos, reuniones y ventas reportadas.</p>
+            <h3>Resultados comerciales</h3>
+            <p>No nos detenemos en clics o formularios. Seguimos prospectos, conversaciones, reuniones y ventas reportadas.</p>
             <span class="pillar__status"><span class="pillar__status-dot" aria-hidden="true"></span>Seguimiento del avance comercial</span>
             <span class="pillar__index" aria-hidden="true">03</span>
           </div>
           <div class="pillar pillar--tech" data-reveal style="transition-delay: 180ms;">
             <div>
-              <h3>Con IA real</h3>
-              <p>Usamos IA para responder rápido, ordenar oportunidades y evitar que los leads se pierdan.</p>
-              <span class="pillar__status"><span class="pillar__status-dot" aria-hidden="true"></span>Agente de IA activo 24/7</span>
+              <h3>Seguimiento con IA</h3>
+              <p>La inteligencia artificial responde, califica y acompaña a los prospectos para reducir tiempos de espera y evitar que las oportunidades se enfríen.</p>
+              <span class="pillar__status"><span class="pillar__status-dot" aria-hidden="true"></span>Responde y da seguimiento por WhatsApp</span>
             </div>
             <span class="pillar__index" aria-hidden="true">04</span>
           </div>
@@ -1215,21 +1262,21 @@
           <div class="process-step" data-reveal style="transition-delay: 60ms;">
             <div class="process-step__num">02</div>
             <div class="process-step__body">
-              <h3>Generamos Demanda</h3>
-              <p>Conectamos tus anuncios a un sistema que prioriza oportunidades reales, no solo clics.</p>
+              <h3>Optimizamos la captación</h3>
+              <p>Tomamos los esfuerzos de captación que tu empresa ya ha comenzado a validar y los integramos en un sistema orientado a generar conversaciones comerciales.</p>
             </div>
           </div>
           <div class="process-step" data-reveal style="transition-delay: 120ms;">
             <div class="process-step__num">03</div>
             <div class="process-step__body">
               <h3>Seguimiento con IA</h3>
-              <p>Nuestro agente responde 24/7 por WhatsApp para que ningún prospecto se pierda por falta de respuesta.</p>
+              <p>Nuestro agente responde y da seguimiento por WhatsApp, incluso fuera del horario comercial, para reducir tiempos de espera y evitar que las oportunidades se enfríen.</p>
             </div>
           </div>
           <div class="process-step" data-reveal style="transition-delay: 180ms;">
             <div class="process-step__num">04</div>
             <div class="process-step__body">
-              <h3>Reporte Medible</h3>
+              <h3>Reporte medible</h3>
               <p>Te mostramos qué llegó, qué avanzó y qué se cerró: prospectos, reuniones y ventas reportadas.</p>
             </div>
           </div>
@@ -1241,21 +1288,21 @@
     <section class="section section--light" id="casos">
       <div class="container">
         <div class="section__header section__header--sm" data-reveal>
-          <h2>Así medimos la tracción real</h2>
+          <h2>Así medimos la tracción</h2>
           <p>Sin métricas infladas. Medimos lo que importa: prospectos, reuniones y ventas reportadas.</p>
         </div>
 
         <div class="metrics">
           <div class="metric-card" data-reveal>
             <span class="metric-card__tag">Métrica 01</span>
-            <div class="metric-card__label">Clientes potenciales generados</div>
-            <p class="metric-card__desc">Personas interesadas que llegaron a través del sistema.</p>
+            <div class="metric-card__label">Prospectos generados</div>
+            <p class="metric-card__desc">Personas que ingresaron al sistema.</p>
           </div>
           <span class="metrics__arrow" aria-hidden="true">→</span>
           <div class="metric-card" data-reveal style="transition-delay: 60ms;">
             <span class="metric-card__tag">Métrica 02</span>
             <div class="metric-card__label">Reuniones agendadas</div>
-            <p class="metric-card__desc">Prospectos que avanzaron a llamada, videollamada o reunión.</p>
+            <p class="metric-card__desc">Oportunidades que avanzaron a una instancia comercial.</p>
           </div>
           <span class="metrics__arrow" aria-hidden="true">→</span>
           <div class="metric-card" data-reveal style="transition-delay: 120ms;">
@@ -1264,6 +1311,28 @@
             <p class="metric-card__desc">Reuniones que tu equipo informó como cerradas.</p>
           </div>
         </div>
+        <p class="metrics-note" data-reveal>Entre el prospecto y la venta también medimos las conversaciones iniciadas y las oportunidades calificadas, para ver qué llegó, qué avanzó y qué se cerró. Tracciona genera y acompaña oportunidades comerciales: el cierre final también depende de la capacidad de seguimiento, atención y venta del equipo de cada empresa.</p>
+      </div>
+    </section>
+
+    <!-- CLIENTE IDEAL -->
+    <section class="section" id="para-quien">
+      <div class="container">
+        <div class="section__header" data-reveal>
+          <span class="eyebrow">Antes de avanzar</span>
+          <h2>Tracciona funciona mejor cuando…</h2>
+        </div>
+        <div class="fit-list">
+          <div class="fit" data-reveal><span class="fit__mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Tu empresa lleva al menos un año operando.</p></div>
+          <div class="fit" data-reveal style="transition-delay: 40ms;"><span class="fit__mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Tu servicio ya ha generado ventas y ha demostrado interés en el mercado.</p></div>
+          <div class="fit" data-reveal style="transition-delay: 80ms;"><span class="fit__mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Ya has probado acciones orgánicas, comerciales o campañas de pago.</p></div>
+          <div class="fit" data-reveal style="transition-delay: 120ms;"><span class="fit__mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Tu servicio se vende mediante una llamada, videollamada o reunión.</p></div>
+          <div class="fit" data-reveal style="transition-delay: 160ms;"><span class="fit__mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Tienes capacidad para atender más clientes.</p></div>
+          <div class="fit" data-reveal style="transition-delay: 200ms;"><span class="fit__mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>El valor de una venta justifica invertir en adquisición.</p></div>
+          <div class="fit" data-reveal style="transition-delay: 240ms;"><span class="fit__mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Puedes gestionar comercialmente las oportunidades que genera el sistema.</p></div>
+          <div class="fit" data-reveal style="transition-delay: 280ms;"><span class="fit__mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Estás dispuesto a medir desde el prospecto hasta la venta.</p></div>
+        </div>
+        <p class="section__note" data-reveal>No partimos desde una idea sin validar. Trabajamos sobre una base comercial existente para convertir esfuerzos aislados en un sistema más ordenado, medible y escalable.</p>
       </div>
     </section>
 
@@ -1271,8 +1340,14 @@
     <section class="section cta-section" id="contacto">
       <div class="container cta-grid">
         <div class="cta-copy" data-reveal>
-          <h2>¿Hablamos de tus próximos clientes?</h2>
-          <p>Agenda una llamada de 30 minutos, sin costo, y revisamos cómo podemos ayudarte a generar más demanda, más oportunidades y más reuniones comerciales.</p>
+          <h2>Revisemos dónde se está frenando tu crecimiento</h2>
+          <p>En una sesión de 30 minutos analizamos cómo estás generando oportunidades, qué ocurre después de cada consulta y en qué etapas podrían estar perdiéndose potenciales clientes.</p>
+          <ul class="cta-results" data-reveal>
+            <li>La capacidad disponible de tu negocio.</li>
+            <li>Las principales fugas del proceso comercial.</li>
+            <li>El nivel de validación de tu captación actual.</li>
+            <li>La viabilidad de implementar un sistema de captación y seguimiento.</li>
+          </ul>
         </div>
 
         <!-- Formulario nativo de Ninja Suite/GHL (pedido 2026-07-08: "que quede
